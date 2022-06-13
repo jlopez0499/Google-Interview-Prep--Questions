@@ -1257,3 +1257,86 @@ var mergeTwoLists = function(l1, l2) {
   
   //Time Complexity: O(n)
   //Space Complexity: O(1)
+
+
+  //W 53. Maximum Subarray
+
+  /**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function maxSubArray(nums) {
+    var prev = 0;
+    var max = -Number.MAX_VALUE;
+  
+    for (var i = 0; i < nums.length; i++) {
+      prev = Math.max(prev + nums[i], nums[i]);
+      max = Math.max(max, prev);
+    }
+    return max;
+  }
+
+
+  //W 49. Group Anagrams
+
+  /**
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
+var groupAnagrams = function(strs){
+	var newArr = [];
+	strs.forEach((elem) =>{
+		key = elem.split('').sort();
+		newArr[key] instanceof Array ? newArr[key].push(elem) : newArr[key] = [elem];
+	});
+	return Object.keys(newArr).map(function(k){return newArr[k]});
+}
+
+//W 152. Maximum Product Subarray
+/* 
+Time Complexity O(n)
+Space Complexity O(1)
+*/
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+ var maxProduct = function(nums) {
+    if(!Array.isArray(nums) || nums.length===0) return 0;
+    let maxSubArrayProd = nums[0], maxEndingHere = nums[0], minEndingHere = nums[0];
+    for(let id=1;nums.length>id;id++){
+      if(nums[id] > 0){
+        maxEndingHere = Math.max(maxEndingHere*nums[id], nums[id]);
+        minEndingHere = Math.min(minEndingHere*nums[id], nums[id]);
+      }else if(nums[id] < 0){
+        let temp = maxEndingHere;
+        maxEndingHere = Math.max(minEndingHere*nums[id], nums[id]);
+        minEndingHere = Math.min(temp*nums[id], nums[id]);
+      }else{
+        maxEndingHere = 0;
+        minEndingHere = 0;
+      }
+      maxSubArrayProd = Math.max(maxEndingHere, maxSubArrayProd);
+    }
+    return maxSubArrayProd;
+  };
+
+
+//W  371. Sum of Two Integers
+
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ */
+ var getSum = function(a, b) {
+    let carry;
+    while((a & b) !== 0){
+        carry = (a & b) << 1;
+        a = a ^ b;
+        b = carry;
+    }
+    return a ^ b;
+};
