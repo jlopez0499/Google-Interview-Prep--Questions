@@ -1050,3 +1050,210 @@ function wordsTyping(sentence, rows, cols) {
     }
     return result;
 };
+
+
+//W 1937. Maximum Number of Points with Cost
+
+/**
+ * @param {number[][]} points
+ * @return {number}
+ */
+ var maxPoints = function(points) {
+    let prev = points[0]; 
+    let curr = Array(points[0].length); 
+    
+    for(let i = 1; i<points.length; i++){
+        
+        // from left to right; 
+        for(let j = 0, maxAdd=0; j<points[0].length;j++){
+            maxAdd = Math.max(maxAdd-1, prev[j]);
+            curr[j] = points[i][j] + maxAdd;
+        }
+        
+        for(let j = points[0].length-1, maxAdd = 0; j>=0; j--){
+            maxAdd = Math.max(maxAdd-1, prev[j]);
+            curr[j] = Math.max(curr[j], points[i][j] + maxAdd)
+        }
+        
+        
+        prev = curr; 
+        curr = Array(points[0].length)
+        
+    }
+    return Math.max(...prev)
+};
+
+
+
+//W 70. Climbing Stairs DYNAMIC PROGRAMMING
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+ let climbStairs = function(n) {
+    let arr=[];
+    arr[1]=1;
+    arr[2]=2;
+    for(let i=3;i<=n;i++){
+        arr[i]=arr[i-1]+arr[i-2];
+    }
+    return arr[n];
+};
+
+
+//W 21. Merge Two Sorted Linked Lists
+
+/**
+* Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} list1
+ * @param {ListNode} list2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function(l1, l2) {
+    let list = new ListNode()
+    let head = list
+    
+    while (l1 !== null && l2 !== null) {
+	
+		// Select the smallest value from either linked list,
+		// then increment that list forward.
+        if (l1.val < l2.val) {
+            list.next = new ListNode(l1.val)
+            l1 = l1.next
+        } else {
+            list.next = new ListNode(l2.val)
+            l2 = l2.next
+        }
+        
+        list = list.next
+    }
+    
+	// It's possible that one linked list is shorter than the other so we just
+	// add on the remainder of the last linked list. It's already sorted :)
+    if (l1 !== null)
+        list.next = l1
+    if (l2 !== null)
+        list.next = l2
+    
+	// return .next because this first element in the linkedlist is empty
+    return head.next
+};
+
+
+//W 23. Merge k Sorted Lists
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode[]} lists
+ * @return {ListNode}
+ */
+ var mergeKLists = function(lists) {
+    const merge = (l1, l2) => {
+      if (!l1 || !l2) return l1 || l2;
+      let node = {};
+      const root = node;
+      while (l1 && l2) {
+        if (l1.val <= l2.val) {
+          node.next = l1;
+          l1 = l1.next;
+        } else {
+          node.next = l2;
+          l2 = l2.next;
+        }
+        node = node.next;
+      }
+      if (l1) node.next = l1;
+      if (l2) node.next = l2;
+      return root.next;
+    }
+    
+    let root = lists[0];
+    for (let i = 1; i < lists.length; i++) {
+      root = merge(root, lists[i]);
+    }
+    
+    return root || null;
+  };
+
+
+//W  104. Maximum Depth of Binary Tree
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+ var maxDepth = function(root) {
+    if(!root) return null;
+    let max = Math.max(maxDepth(root.left), maxDepth(root.right));
+    return max + 1;
+}
+
+
+
+//W 1. Two Sum
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+ function twoSum(nums, target) {
+    let vals = {};
+  
+    for (let i = 0; i < nums.length; i++) {
+      if (target - nums[i] in vals) {
+        return [vals[target-nums[i]], i];
+      } else {
+        vals[nums[i]] = i;
+      }
+    }
+    return [];
+  };
+
+
+//W 121. Best Time to Buy and Sell Stock
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+ const maxProfit = (prices) => {
+    let left = 0; // Buy
+    let right = 1; // sell
+    let max_profit = 0;
+    while (right < prices.length) {
+      if (prices[left] < prices[right]) {
+        let profit = prices[right] - prices[left]; // our current profit
+  
+        max_profit = Math.max(max_profit, profit);
+      } else {
+        left = right;
+      }
+      right++;
+    }
+    return max_profit;
+  };
+  
+  //Time Complexity: O(n)
+  //Space Complexity: O(1)
